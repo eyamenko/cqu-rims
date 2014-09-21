@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns="http://www.w3.org/1999/xhtml">
+<ui:include src="head.xhtml"/>
+<h:body>
+    <f:event listener="#{movieController.doFindMovies}" type="preRenderView"/>
+    <ui:include src="menu.xhtml"/>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="page-header">
+                    <h3>Create a new movie</h3>
+                </div>
+                <h:form id="newMovieForm">
+                    <div class="form-group">
+                        <h:inputText id="title" required="true"
+                                     styleClass="form-control #{component.valid ? '' : 'state-error'}"
+                                     value="#{movieController.movie.title}"/>
+                        <p:watermark for="title" value="Title"/>
+                    </div>
+
+                    <div class="form-group">
+                        <h:inputText id="description" required="true"
+                                     styleClass="form-control #{component.valid ? '' : 'state-error'}"
+                                     value="#{movieController.movie.description}"/>
+                        <p:watermark for="description" value="Description"/>
+                    </div>
+
+                    <div class="form-group">
+                        <h:selectOneMenu id="rating" required="true"
+                                         styleClass="form-control #{component.valid ? '' : 'state-error'}"
+                                         value="#{movieController.movie.rating}">
+                            <f:selectItems value="#{productController.ratings}"/>
+                        </h:selectOneMenu>
+                    </div>
+
+                    <div class="form-group">
+                        <p:calendar id="dateReleased" mode="popup" required="true"
+                                    validator="dateBeforeTodayValidator"
+                                    value="#{movieController.movie.releaseDate}"/>
+                        <p:watermark for="dateReleased" value="Date released"/>
+                    </div>
+
+                    <div class="form-group">
+                        <h:inputText id="directorName" required="true"
+                                     styleClass="form-control #{component.valid ? '' : 'state-error'}"
+                                     value="#{movieController.movie.directorName}"/>
+                        <p:watermark for="directorName" value="Director"/>
+                    </div>
+
+                    <div class="form-group">
+                        <h:inputText converter="javax.faces.Integer" id="length" required="true"
+                                     styleClass="form-control #{component.valid ? '' : 'state-error'}"
+                                     validator="positiveIntegerValidator"
+                                     value="#{movieController.movie.length}"/>
+                        <p:watermark for="length" value="Length"/>
+                    </div>
+
+                    <div class="form-group">
+                        <h:inputText id="language" required="true"
+                                     styleClass="form-control #{component.valid ? '' : 'state-error'}"
+                                     value="#{movieController.movie.language}"/>
+                        <p:watermark for="language" value="Language"/>
+                    </div>
+
+                    <h:commandButton action="#{movieController.doCreateMovie}"
+                                     class="btn btn-success" value="Create">
+                        <f:ajax execute="@form" render="@form :moviesTable"/>
+                    </h:commandButton>
+                </h:form>
+            </div>
+            <div class="col-lg-9">
+                <div class="page-header">
+                    <h3>List of the movies</h3>
+                </div>
+                <h:form id="moviesTable">
+                    <h:dataTable rendered="#{empty movieController.movieList ? 'false' : 'true'}"
+                                 styleClass="table table-condensed table-striped"
+                                 value="#{movieController.movieList}" var="item">
+                        <ui:include src="productTable.xhtml"/>
+
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="Director"/>
+                            </f:facet>
+                            <h:outputText value="#{item.directorName}"/>
+                        </h:column>
+
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="Length"/>
+                            </f:facet>
+                            <h:outputText value="#{item.length}"/>
+                        </h:column>
+
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="Language"/>
+                            </f:facet>
+                            <h:outputText value="#{item.language}"/>
+                        </h:column>
+
+                        <h:column>
+                            <h:commandButton action="#{movieController.doDeleteMovie(item)}"
+                                             class="btn btn-xs btn-danger" value="X">
+                                <f:ajax render="@form"/>
+                            </h:commandButton>
+                        </h:column>
+                    </h:dataTable>
+                </h:form>
+            </div>
+        </div>
+    </div>
+    <ui:include src="footer.xhtml"/>
+</h:body>
+</html>

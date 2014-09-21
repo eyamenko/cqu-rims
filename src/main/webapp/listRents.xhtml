@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns="http://www.w3.org/1999/xhtml">
+<ui:include src="head.xhtml"/>
+<h:body>
+    <ui:include src="menu.xhtml"/>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="page-header">
+                    <h3>Create a new rent</h3>
+                </div>
+                <h:form id="newRentForm">
+                    <div class="form-group">
+                        <h:selectOneMenu converter="entityConverter" id="itemToRent" required="true"
+                                         styleClass="form-control #{component.valid ? '' : 'state-error'}"
+                                         value="#{rentController.rent.product}">
+                            <f:selectItems value="#{productController.products}"/>
+                        </h:selectOneMenu>
+                    </div>
+
+                    <div class="form-group">
+                        <p:calendar id="dueDate" mode="popup" required="true"
+                                    validator="dateAfterTodayValidator"
+                                    value="#{rentController.rent.dueDate}"/>
+                        <p:watermark for="dueDate" value="Due date"/>
+                    </div>
+
+                    <h:commandButton action="#{rentController.doCreateRent}"
+                                     class="btn btn-success" value="Create">
+                        <f:ajax execute="@form" render="@form :rentsTable"/>
+                    </h:commandButton>
+                </h:form>
+            </div>
+            <div class="col-lg-9">
+                <div class="page-header">
+                    <h3>List of #{rentController.customer.firstName}'s rented products</h3>
+                </div>
+                <h:form id="rentsTable">
+                    <h:dataTable rendered="#{empty rentController.rentList ? 'false' : 'true'}"
+                                 styleClass="table table-condensed table-striped"
+                                 value="#{rentController.rentList}" var="rent">
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="Item rented"/>
+                            </f:facet>
+                            <h:outputText value="#{rent.product.title}"/>
+                        </h:column>
+
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="Number of days hired"/>
+                            </f:facet>
+                            <h:outputText value="#{rent.numberOfDaysHired}"/>
+                        </h:column>
+
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="Due"/>
+                            </f:facet>
+                            <h:outputText value="#{rent.dueDate}">
+                                <f:convertDateTime dateStyle="short" type="date"/>
+                            </h:outputText>
+                        </h:column>
+
+                        <h:column>
+                            <h:commandButton action="#{rentController.doDeleteRent(rent)}"
+                                             class="btn btn-xs btn-danger" value="X">
+                                <f:ajax render="@form"/>
+                            </h:commandButton>
+                        </h:column>
+                    </h:dataTable>
+                </h:form>
+            </div>
+        </div>
+    </div>
+    <ui:include src="footer.xhtml"/>
+</h:body>
+</html>

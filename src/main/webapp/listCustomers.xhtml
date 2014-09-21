@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns="http://www.w3.org/1999/xhtml">
+<ui:include src="head.xhtml"/>
+<h:body>
+    <f:event listener="#{customerController.doFindCustomers}" type="preRenderView"/>
+    <ui:include src="menu.xhtml"/>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="page-header">
+                    <h3>Create a new customer</h3>
+                </div>
+                <h:form id="newCustomerForm">
+                    <div class="form-group">
+                        <h:inputText id="firstName" required="true"
+                                     styleClass="form-control #{component.valid ? '' : 'state-error'}"
+                                     value="#{customerController.customer.firstName}"/>
+                        <p:watermark for="firstName" value="First name"/>
+                    </div>
+
+                    <div class="form-group">
+                        <h:inputText id="lastName" required="true"
+                                     styleClass="form-control #{component.valid ? '' : 'state-error'}"
+                                     value="#{customerController.customer.lastName}"/>
+                        <p:watermark for="lastName" value="Last name"/>
+                    </div>
+
+                    <div class="form-group">
+                        <h:inputText id="address" required="true"
+                                     styleClass="form-control #{component.valid ? '' : 'state-error'}"
+                                     value="#{customerController.customer.address}"/>
+                        <p:watermark for="address" value="Address"/>
+                    </div>
+
+                    <h:commandButton action="#{customerController.doCreateCustomer}"
+                                     class="btn btn-success" value="Create">
+                        <f:ajax execute="@form" render="@form :customersTable"/>
+                    </h:commandButton>
+                </h:form>
+            </div>
+            <div class="col-lg-9">
+                <div class="page-header">
+                    <h3>List of the customers</h3>
+                </div>
+                <h:form id="customersTable">
+                    <h:dataTable
+                        rendered="#{empty customerController.customerList ? 'false' : 'true'}"
+                        styleClass="table table-condensed table-striped"
+                        value="#{customerController.customerList}" var="customer">
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="First name"/>
+                            </f:facet>
+                            <h:outputText value="#{customer.firstName}"/>
+                        </h:column>
+
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="Last name"/>
+                            </f:facet>
+                            <h:outputText value="#{customer.lastName}"/>
+                        </h:column>
+
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="Address"/>
+                            </f:facet>
+                            <h:outputText value="#{customer.address}"/>
+                        </h:column>
+
+                        <h:column>
+                            <h:button class="btn btn-xs btn-info" outcome="listRents" value="Rents">
+                                <f:param name="customerID" value="#{customer.id}"/>
+                            </h:button>
+                            <h:commandButton
+                                action="#{customerController.doDeleteCustomer(customer)}"
+                                class="btn btn-xs btn-danger" value="X">
+                                <f:ajax render="@form"/>
+                            </h:commandButton>
+                        </h:column>
+                    </h:dataTable>
+                </h:form>
+            </div>
+        </div>
+    </div>
+    <ui:include src="footer.xhtml"/>
+</h:body>
+</html>

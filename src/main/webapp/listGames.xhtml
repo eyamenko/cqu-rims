@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns="http://www.w3.org/1999/xhtml">
+<ui:include src="head.xhtml"/>
+<h:body>
+    <f:event listener="#{gameController.doFindGames}" type="preRenderView"/>
+    <ui:include src="menu.xhtml"/>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="page-header">
+                    <h3>Create a new game</h3>
+                </div>
+                <h:form id="newGameForm">
+                    <div class="form-group">
+                        <h:inputText id="title" required="true"
+                                     styleClass="form-control #{component.valid ? '' : 'state-error'}"
+                                     value="#{gameController.game.title}"/>
+                        <p:watermark for="title" value="Title"/>
+                    </div>
+
+                    <div class="form-group">
+                        <h:inputText id="description" required="true"
+                                     styleClass="form-control #{component.valid ? '' : 'state-error'}"
+                                     value="#{gameController.game.description}"/>
+                        <p:watermark for="description" value="Description"/>
+                    </div>
+
+                    <div class="form-group">
+                        <h:selectOneMenu id="rating" required="true"
+                                         styleClass="form-control #{component.valid ? '' : 'state-error'}"
+                                         value="#{gameController.game.rating}">
+                            <f:selectItems value="#{productController.ratings}"/>
+                        </h:selectOneMenu>
+                    </div>
+
+                    <div class="form-group">
+                        <p:calendar id="dateReleased" mode="popup" required="true"
+                                    validator="dateBeforeTodayValidator"
+                                    value="#{gameController.game.releaseDate}"/>
+                        <p:watermark for="dateReleased" value="Date released"/>
+                    </div>
+
+                    <div class="form-group">
+                        <h:inputText id="studioName" required="true"
+                                     styleClass="form-control #{component.valid ? '' : 'state-error'}"
+                                     value="#{gameController.game.studioName}"/>
+                        <p:watermark for="studioName" value="Studio"/>
+                    </div>
+
+                    <div class="form-group">
+                        <h:inputText id="platform" required="true"
+                                     styleClass="form-control #{component.valid ? '' : 'state-error'}"
+                                     value="#{gameController.game.platform}"/>
+                        <p:watermark for="platform" value="Platform"/>
+                    </div>
+
+                    <h:commandButton action="#{gameController.doCreateGame}"
+                                     class="btn btn-success" value="Create">
+                        <f:ajax execute="@form" render="@form :gamesTable"/>
+                    </h:commandButton>
+                </h:form>
+            </div>
+            <div class="col-lg-9">
+                <div class="page-header">
+                    <h3>List of the games</h3>
+                </div>
+                <h:form id="gamesTable">
+                    <h:dataTable rendered="#{empty gameController.gameList ? 'false' : 'true'}"
+                                 styleClass="table table-condensed table-striped"
+                                 value="#{gameController.gameList}" var="item">
+                        <ui:include src="productTable.xhtml"/>
+
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="Studio"/>
+                            </f:facet>
+                            <h:outputText value="#{item.studioName}"/>
+                        </h:column>
+
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="Platform"/>
+                            </f:facet>
+                            <h:outputText value="#{item.platform}"/>
+                        </h:column>
+
+                        <h:column>
+                            <h:commandButton action="#{gameController.doDeleteGame(item)}"
+                                             class="btn btn-xs btn-danger" value="X">
+                                <f:ajax render="@form"/>
+                            </h:commandButton>
+                        </h:column>
+                    </h:dataTable>
+                </h:form>
+            </div>
+        </div>
+    </div>
+    <ui:include src="footer.xhtml"/>
+</h:body>
+</html>

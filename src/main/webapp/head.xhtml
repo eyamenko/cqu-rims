@@ -1,0 +1,23 @@
+<ui:composition xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns="http://www.w3.org/1999/xhtml">
+    <h:head>
+        <f:facet name="first">
+            <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+            <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+            <meta name="viewport" content="width=device-width, initial-scale=1"/>
+            <title>Renting Information Management System</title>
+        </f:facet>
+        <f:facet name="middle">
+            <!-- Bootstrap core CSS -->
+            <h:outputStylesheet name="bootstrap/css/bootstrap.min.css"/>
+            <!-- JavaScript -->
+            <h:outputScript name="jquery/jquery.js" library="primefaces"/>
+            <h:outputScript name="bootstrap/js/bootstrap.min.js"/>
+        </f:facet>
+        <!-- Custom styles -->
+        <link href="#{request.contextPath}/resources/css/custom.css" rel="stylesheet"
+              type="text/css"/>
+    </h:head>
+</ui:composition>
