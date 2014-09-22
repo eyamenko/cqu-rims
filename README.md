@@ -17,7 +17,7 @@
 
 ## Setup
 
-Sample setup for GlassFish Server & Apache Derby
+Sample setup for GlassFish Server & Apache Derby:
 
 1. `$ asadmin start-domain`
 2. `$ startNetworkServer`
