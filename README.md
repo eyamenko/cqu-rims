@@ -9,7 +9,6 @@ Renting Information Management System JavaEE application
 * JSF
 * PrimeFaces
 * Twitter Bootstrap
-* Maven
 
 ## Prerequisites
 
