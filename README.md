@@ -21,6 +21,7 @@ Renting Information Management System JavaEE application
 ## Setup
 
 Sample setup for GlassFish Server & Apache Derby
+
 1. `$ asadmin start-domain`
 2. `$ startNetworkServer`
 3. `$ asadmin create-jdbc-connection-pool --datasourceclassname=org.apache.derby.jdbc.ClientDataSource --restype=javax.sql.DataSource --property portNumber=1527:password=APP:user=APP:serverName=localhost:databaseName=RIMSDB:connectionAttributes=\;create\\=true RIMSPool`
