@@ -1,6 +1,4 @@
-# RIMS
-
-Renting Information Management System JavaEE application
+# Renting Information Management System JavaEE application
 
 ## Technologies used
 
