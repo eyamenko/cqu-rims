@@ -1,6 +1,6 @@
-# Renting Information Management System JavaEE application
+## Renting Information Management System JavaEE application
 
-## Technologies used
+### Technologies used
 
 * EJB
 * JPA (EclipseLink)
@@ -8,14 +8,14 @@
 * PrimeFaces
 * Twitter Bootstrap
 
-## Prerequisites
+### Prerequisites
 
 * JDK 7
 * GlassFish Server
 * Apache Derby
 * Maven
 
-## Setup
+### Setup
 
 Sample setup for GlassFish Server & Apache Derby:
 
